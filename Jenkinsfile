@@ -25,7 +25,8 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing root and sub-project dependencies...'
+                echo 'Cleaning npm cache and installing dependencies...'
+                sh 'npm cache clean --force'
                 // Using 'npm ci' instead of 'npm install' as it's more reliable in CI environments
                 // It deletes existing node_modules and ensures a clean, consistent install from package-lock.json
                 sh 'npm ci'
