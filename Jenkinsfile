@@ -26,8 +26,15 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing root and sub-project dependencies...'
-                sh 'npm install'
-                sh 'npm run install-all'
+                // Using 'npm ci' instead of 'npm install' as it's more reliable in CI environments
+                // It deletes existing node_modules and ensures a clean, consistent install from package-lock.json
+                sh 'npm ci'
+                dir('backend') {
+                    sh 'npm ci'
+                }
+                dir('frontend') {
+                    sh 'npm ci'
+                }
             }
         }
 
@@ -113,7 +120,7 @@ pipeline {
         always {
             echo 'Pipeline execution finished. Cleaning up workspace...'
             sh 'docker logout'
-            // cleanWs()
+            cleanWs()
         }
         success {
             echo 'Full CI/CD Lifecycle Completed Successfully!'
