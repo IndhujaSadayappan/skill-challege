@@ -10,7 +10,7 @@ pipeline {
         FRONTEND_IMAGE = "${DOCKER_HUB_USER}/skill-frontend"
         
         // Jenkins Credentials ID
-        DOCKER_CREDS_ID = 'docker-hub-credentials'
+        DOCKER_CREDS_ID = 'docker-creds'
         
         // CI environment variable
         CI = 'true'
@@ -68,31 +68,51 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
+                    echo "Starting Parallel Docker Build and Push..."
                     // This pulls the Docker Hub username and password from Jenkins credentials
+                    // Ensuring we use the credentials provided in the script
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
                         
-                        // Use the credential-provided username for image naming
                         def HUB_USER = env.DOCKER_USER
-
-                        // Login to Docker Hub
-                        echo 'Logging into Docker Hub...'
+                        // Login once before starting parallel builds
                         sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
 
-                        // --- Backend Image ---
-                        echo "Building Backend Image: ${HUB_USER}/skill-backend..."
-                        sh "docker build -t ${HUB_USER}/skill-backend:latest -t ${HUB_USER}/skill-backend:${BUILD_NUMBER} ./backend"
-                        
-                        echo "Pushing Backend Images to Docker Hub..."
-                        sh "docker push ${HUB_USER}/skill-backend:latest"
-                        sh "docker push ${HUB_USER}/skill-backend:${BUILD_NUMBER}"
-
-                        // --- Frontend Image ---
-                        echo "Building Frontend Image: ${HUB_USER}/skill-frontend..."
-                        sh "docker build -t ${HUB_USER}/skill-frontend:latest -t ${HUB_USER}/skill-frontend:${BUILD_NUMBER} ./frontend"
-                        
-                        echo "Pushing Frontend Images to Docker Hub..."
-                        sh "docker push ${HUB_USER}/skill-frontend:latest"
-                        sh "docker push ${HUB_USER}/skill-frontend:${BUILD_NUMBER}"
+                        parallel(
+                            "Backend Build & Push": {
+                                echo "--- Processing Backend Image ---"
+                                // Pull latest image to use as cache source to save time
+                                sh "docker pull ${HUB_USER}/skill-backend:latest || true"
+                                // Build with BuildKit and Cache-From
+                                sh """
+                                    export DOCKER_BUILDKIT=1
+                                    docker build \
+                                    --cache-from ${HUB_USER}/skill-backend:latest \
+                                    -t ${HUB_USER}/skill-backend:latest \
+                                    -t ${HUB_USER}/skill-backend:${BUILD_NUMBER} \
+                                    ./backend
+                                """
+                                // Push both tags
+                                sh "docker push ${HUB_USER}/skill-backend:latest"
+                                sh "docker push ${HUB_USER}/skill-backend:${BUILD_NUMBER}"
+                            },
+                            "Frontend Build & Push": {
+                                echo "--- Processing Frontend Image ---"
+                                // Pull latest image to use as cache source to save time
+                                sh "docker pull ${HUB_USER}/skill-frontend:latest || true"
+                                // Build with BuildKit and Cache-From
+                                sh """
+                                    export DOCKER_BUILDKIT=1
+                                    docker build \
+                                    --cache-from ${HUB_USER}/skill-frontend:latest \
+                                    -t ${HUB_USER}/skill-frontend:latest \
+                                    -t ${HUB_USER}/skill-frontend:${BUILD_NUMBER} \
+                                    ./frontend
+                                """
+                                // Push both tags
+                                sh "docker push ${HUB_USER}/skill-frontend:latest"
+                                sh "docker push ${HUB_USER}/skill-frontend:${BUILD_NUMBER}"
+                            }
+                        )
                     }
                 }
             }
