@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import MonacoEditor from "@monaco-editor/react"
+// Replaced MonacoEditor with a standard textarea to remove the @monaco-editor/react dependency
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 
@@ -391,21 +391,30 @@ const ModuleDetail = () => {
                         </button>
                       </div>
 
-                      <div style={{ border: "1px solid var(--border)", borderRadius: "var(--radius)", overflow: "hidden" }}>
-                        <MonacoEditor
-                          height="300px"
-                          language={currentLessonData.content.coding.language || "javascript"}
-                          theme={isDark ? "vs-dark" : "vs-light"}
-                          value={codeAnswer}
-                          onChange={(value) => setCodeAnswer(value || "")}
-                          options={{
-                            minimap: { enabled: false },
-                            fontSize: 14,
-                            lineNumbers: "on",
-                            roundedSelection: false,
-                            scrollBeyondLastLine: false,
-                            automaticLayout: true,
+                      <div style={{
+                        border: "1px solid var(--border)",
+                        borderRadius: "var(--radius)",
+                        overflow: "hidden",
+                        background: isDark ? "#1e1e1e" : "#ffffff"
+                      }}>
+                        <textarea
+                          style={{
+                            width: "100%",
+                            height: "300px",
+                            padding: "1rem",
+                            border: "none",
+                            resize: "none",
+                            backgroundColor: "transparent",
+                            color: isDark ? "#d4d4d4" : "#1a1a1a",
+                            fontFamily: "'Fira Code', 'Courier New', monospace",
+                            fontSize: "14px",
+                            outline: "none",
+                            lineHeight: "1.5"
                           }}
+                          value={codeAnswer}
+                          onChange={(e) => setCodeAnswer(e.target.value)}
+                          placeholder="// Write your code here..."
+                          spellCheck="false"
                         />
                       </div>
                     </div>

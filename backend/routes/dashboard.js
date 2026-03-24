@@ -2,7 +2,7 @@ const express = require("express");
 const { auth } = require("../middleware/auth");
 const Skill = require("../models/Skill");
 const User = require("../models/User");
-const { PDFDocument, rgb } = require("pdf-lib");
+// PDF Document and Certificate Generation have been removed to reduce project dependencies
 const fs = require("fs");
 const path = require("path");
 
@@ -28,13 +28,13 @@ router.get("/", auth, async (req, res) => {
 
     // Find current active skill
     let currentProgress = user.skillsProgress.find(p => p.status === "in_progress");
-    
+
     // Find all completed skills
     let completedSkills = user.skillsProgress.filter(p => p.status === "completed");
 
     // Optional: If you need Skill Names in the dashboard immediately, populating them here helps
     // For now, we return the raw structure as requested
-    
+
     res.json({
       success: true,
       dashboard: {
@@ -93,28 +93,28 @@ router.post("/set-challenge", auth, async (req, res) => {
     // Auto-enroll if missing
     let skillProgress = user.skillsProgress.find(p => p.skillId.toString() === skillId);
     if (!skillProgress) {
-        user.skillsProgress.push({
-            skillId: skillId,
-            status: 'in_progress',
-            startedAt: new Date(),
-            modulesProgress: []
-        });
-        skillProgress = user.skillsProgress[user.skillsProgress.length - 1];
+      user.skillsProgress.push({
+        skillId: skillId,
+        status: 'in_progress',
+        startedAt: new Date(),
+        modulesProgress: []
+      });
+      skillProgress = user.skillsProgress[user.skillsProgress.length - 1];
     }
 
     let moduleProgress = skillProgress.modulesProgress.find(m => m.moduleId.toString() === moduleId);
-    
+
     if (moduleProgress) {
       moduleProgress.challengeDays = challengeDays;
       moduleProgress.challengeStartDate = new Date();
     } else {
-       skillProgress.modulesProgress.push({
-           moduleId,
-           challengeDays,
-           challengeStartDate: new Date(),
-           status: "in_progress",
-           lessonsProgress: []
-       });
+      skillProgress.modulesProgress.push({
+        moduleId,
+        challengeDays,
+        challengeStartDate: new Date(),
+        status: "in_progress",
+        lessonsProgress: []
+      });
     }
 
     await user.save();
@@ -134,20 +134,20 @@ router.post("/complete-lesson", auth, async (req, res) => {
     // Ensure structures exist
     let skillProg = user.skillsProgress.find(p => p.skillId.toString() === skillId);
     if (!skillProg) {
-         user.skillsProgress.push({ skillId, status: 'in_progress', modulesProgress: [] });
-         skillProg = user.skillsProgress[user.skillsProgress.length - 1];
+      user.skillsProgress.push({ skillId, status: 'in_progress', modulesProgress: [] });
+      skillProg = user.skillsProgress[user.skillsProgress.length - 1];
     }
 
     let moduleProg = skillProg.modulesProgress.find(m => m.moduleId.toString() === moduleId);
     if (!moduleProg) {
-        skillProg.modulesProgress.push({ moduleId, status: 'in_progress', lessonsProgress: [] });
-        moduleProg = skillProg.modulesProgress.find(m => m.moduleId.toString() === moduleId);
+      skillProg.modulesProgress.push({ moduleId, status: 'in_progress', lessonsProgress: [] });
+      moduleProg = skillProg.modulesProgress.find(m => m.moduleId.toString() === moduleId);
     }
 
     let lessonProg = moduleProg.lessonsProgress.find(l => l.lessonId.toString() === lessonId);
     if (!lessonProg) {
-        moduleProg.lessonsProgress.push({ lessonId, completed: false });
-        lessonProg = moduleProg.lessonsProgress.find(l => l.lessonId.toString() === lessonId);
+      moduleProg.lessonsProgress.push({ lessonId, completed: false });
+      lessonProg = moduleProg.lessonsProgress.find(l => l.lessonId.toString() === lessonId);
     }
 
     if (lessonProg.completed) {
@@ -160,7 +160,7 @@ router.post("/complete-lesson", auth, async (req, res) => {
 
     await user.save();
     await user.save();
-res.json({ success: true, user }); // <-- send updated user
+    res.json({ success: true, user }); // <-- send updated user
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false });
@@ -197,24 +197,24 @@ router.post("/complete-module", auth, async (req, res) => {
     // Check if skill complete
     const skillDef = await Skill.findById(skillId);
     if (skillDef) {
-        const totalModules = skillDef.modules.length;
-        const completedModulesCount = skillProgress.modulesProgress.filter(m => m.status === "completed").length;
-        
-        if (completedModulesCount >= totalModules) {
-            skillProgress.status = "completed";
-            skillProgress.completedAt = new Date();
-            addPointsToUser(user, 1000);
-            user.stats.skillsCompleted = (user.stats.skillsCompleted || 0) + 1;
-            user.stats.certificatesEarned = (user.stats.certificatesEarned || 0) + 1;
+      const totalModules = skillDef.modules.length;
+      const completedModulesCount = skillProgress.modulesProgress.filter(m => m.status === "completed").length;
 
-            const certId = `CERT-${user._id.toString().slice(-6).toUpperCase()}-${skillId.slice(-6).toUpperCase()}`;
-            user.certificates.push({ 
-                skillId, 
-                skillName: skillDef.name, 
-                certificateId: certId, 
-                issuedAt: new Date() 
-            });
-        }
+      if (completedModulesCount >= totalModules) {
+        skillProgress.status = "completed";
+        skillProgress.completedAt = new Date();
+        addPointsToUser(user, 1000);
+        user.stats.skillsCompleted = (user.stats.skillsCompleted || 0) + 1;
+        user.stats.certificatesEarned = (user.stats.certificatesEarned || 0) + 1;
+
+        const certId = `CERT-${user._id.toString().slice(-6).toUpperCase()}-${skillId.slice(-6).toUpperCase()}`;
+        user.certificates.push({
+          skillId,
+          skillName: skillDef.name,
+          certificateId: certId,
+          issuedAt: new Date()
+        });
+      }
     }
 
     await user.save();
@@ -225,32 +225,12 @@ router.post("/complete-module", auth, async (req, res) => {
   }
 });
 
-// POST /api/dashboard/generate-certificate
+// POST /api/dashboard/generate-certificate (Removed to eliminate pdf-lib dependency)
 router.post("/generate-certificate", auth, async (req, res) => {
-  try {
-    const { skillId } = req.body;
-    const user = await User.findById(req.userId);
-    const skill = await Skill.findById(skillId);
-
-    if (!skill) return res.status(404).json({ success: false, message: "Skill not found" });
-
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 400]);
-    const font = await pdfDoc.embedFont("Helvetica-Bold");
-
-    page.drawText("CERTIFICATE OF COMPLETION", { x: 100, y: 300, size: 24, font, color: rgb(0, 0, 0) });
-    page.drawText(`Presented to: ${user.username}`, { x: 100, y: 250, size: 18, font, color: rgb(0.2, 0.2, 0.2) });
-    page.drawText(`For mastering: ${skill.name}`, { x: 100, y: 200, size: 18, font, color: rgb(0, 0.5, 0) });
-    page.drawText(`Date: ${new Date().toLocaleDateString()}`, { x: 100, y: 100, size: 12 });
-
-    const pdfBytes = await pdfDoc.save();
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="${user.username}-Certificate.pdf"`);
-    res.send(Buffer.from(pdfBytes));
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false });
-  }
+  res.status(501).json({
+    success: false,
+    message: "PDF Certificate Generation has been disabled to save build time. Please contact admin for certificates."
+  });
 });
 
 module.exports = router;
