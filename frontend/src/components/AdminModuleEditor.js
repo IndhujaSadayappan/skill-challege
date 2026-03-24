@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import MonacoEditor from "@monaco-editor/react"
 import { useTheme } from "../context/ThemeContext"
 
 const AdminModuleEditor = ({ module, onSave, onCancel }) => {
@@ -42,7 +41,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
   // Generic API call function
   const apiCall = async (endpoint, options = {}) => {
     const token = getAuthToken()
-    
+
     const defaultHeaders = {
       'Content-Type': 'application/json',
       ...(token && { 'Authorization': `Bearer ${token}` })
@@ -111,15 +110,15 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
         if (!section.title?.trim()) {
           throw new Error(`Section ${i + 1} title is required`)
         }
-        
+
         if (section.type === 'quiz' && (!section.content?.questions || section.content.questions.length === 0)) {
           throw new Error(`Section ${i + 1} (Quiz) must have at least one question`)
         }
-        
+
         if (section.type === 'lesson' && !section.content?.trim()) {
           throw new Error(`Section ${i + 1} (Lesson) content is required`)
         }
-        
+
         if (section.type === 'coding' && !section.content?.instructions?.trim()) {
           throw new Error(`Section ${i + 1} (Coding) instructions are required`)
         }
@@ -141,7 +140,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
       })
 
       setSuccess(isUpdate ? 'Module updated successfully!' : 'Module created successfully!')
-      
+
       // Call the parent onSave callback with the saved data
       if (onSave) {
         onSave(data.data)
@@ -238,8 +237,8 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
         type === "lesson"
           ? ""
           : type === "quiz"
-          ? { questions: [] }
-          : { instructions: "", starterCode: "", solution: "" },
+            ? { questions: [] }
+            : { instructions: "", starterCode: "", solution: "" },
     }
     setModuleData({ ...moduleData, sections: [...moduleData.sections, newSection] })
     setActiveSection(moduleData.sections.length)
@@ -305,22 +304,26 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
             </div>
             <div className="form-group">
               <label className="form-label">Content (HTML) *</label>
-              <MonacoEditor
-                height="400px"
-                language="html"
-                theme={isDark ? "vs-dark" : "vs-light"}
-                value={section.content}
-                onChange={(value) => handleSectionChange(activeSection, "content", value || "")}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  wordWrap: "on"
+              <textarea
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  padding: "0.75rem",
+                  fontFamily: 'monospace',
+                  fontSize: "14px",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
+                  color: isDark ? "#d4d4d4" : "#000000",
                 }}
+                value={section.content}
+                onChange={(e) => handleSectionChange(activeSection, "content", e.target.value)}
+                spellCheck="false"
               />
             </div>
           </div>
         )
-      
+
       case "quiz":
         return (
           <div>
@@ -334,7 +337,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                 placeholder="Enter quiz title"
               />
             </div>
-            
+
             <div style={{ marginBottom: "1rem" }}>
               <button className="btn btn-outline" onClick={addQuestion}>
                 Add Question
@@ -348,9 +351,9 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                   <button
                     className="btn"
                     onClick={() => removeQuestion(idx)}
-                    style={{ 
-                      backgroundColor: "#ff4444", 
-                      color: "white", 
+                    style={{
+                      backgroundColor: "#ff4444",
+                      color: "white",
                       padding: "0.25rem 0.5rem",
                       fontSize: "0.8rem"
                     }}
@@ -358,7 +361,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                     Remove
                   </button>
                 </div>
-                
+
                 <div className="form-group" style={{ marginBottom: "1rem" }}>
                   <input
                     type="text"
@@ -368,7 +371,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                     placeholder="Enter your question"
                   />
                 </div>
-                
+
                 <div>
                   <label><strong>Options:</strong></label>
                   {q.options.map((opt, oidx) => (
@@ -395,13 +398,13 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                 </div>
               </div>
             ))}
-            
+
             {(section.content?.questions || []).length === 0 && (
               <p style={{ color: "#666", fontStyle: "italic" }}>No questions added yet. Click "Add Question" to create your first question.</p>
             )}
           </div>
         )
-      
+
       case "coding":
         return (
           <div>
@@ -415,7 +418,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                 placeholder="Enter coding exercise title"
               />
             </div>
-            
+
             <div className="form-group" style={{ marginBottom: "1rem" }}>
               <label className="form-label">Instructions *</label>
               <textarea
@@ -431,43 +434,53 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                 rows="4"
               />
             </div>
-            
+
             <div className="form-group" style={{ marginBottom: "1rem" }}>
               <label className="form-label">Starter Code</label>
-              <MonacoEditor
-                height="200px"
-                language="javascript"
-                theme={isDark ? "vs-dark" : "vs-light"}
-                value={section.content.starterCode || ""}
-                onChange={(value) =>
-                  handleSectionChange(activeSection, "content", { ...section.content, starterCode: value || "" })
-                }
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14
+              <textarea
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  padding: "0.75rem",
+                  fontFamily: 'monospace',
+                  fontSize: "14px",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
+                  color: isDark ? "#d4d4d4" : "#000000",
                 }}
+                value={section.content.starterCode || ""}
+                onChange={(e) =>
+                  handleSectionChange(activeSection, "content", { ...section.content, starterCode: e.target.value })
+                }
+                spellCheck="false"
               />
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Solution</label>
-              <MonacoEditor
-                height="200px"
-                language="javascript"
-                theme={isDark ? "vs-dark" : "vs-light"}
-                value={section.content.solution || ""}
-                onChange={(value) =>
-                  handleSectionChange(activeSection, "content", { ...section.content, solution: value || "" })
-                }
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14
+              <textarea
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  padding: "0.75rem",
+                  fontFamily: 'monospace',
+                  fontSize: "14px",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+                  backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
+                  color: isDark ? "#d4d4d4" : "#000000",
                 }}
+                value={section.content.solution || ""}
+                onChange={(e) =>
+                  handleSectionChange(activeSection, "content", { ...section.content, solution: e.target.value })
+                }
+                spellCheck="false"
               />
             </div>
           </div>
         )
-      
+
       default:
         return <p>Unknown section type</p>
     }
@@ -491,24 +504,24 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
           </div>
 
           {error && (
-            <div style={{ 
-              background: '#fee', 
-              color: '#c33', 
-              padding: '1rem', 
-              borderRadius: '4px', 
+            <div style={{
+              background: '#fee',
+              color: '#c33',
+              padding: '1rem',
+              borderRadius: '4px',
               marginBottom: '1rem',
               border: '1px solid #fcc'
             }}>
               {error}
             </div>
           )}
-          
+
           {success && (
-            <div style={{ 
-              background: '#efe', 
-              color: '#393', 
-              padding: '1rem', 
-              borderRadius: '4px', 
+            <div style={{
+              background: '#efe',
+              color: '#393',
+              padding: '1rem',
+              borderRadius: '4px',
               marginBottom: '1rem',
               border: '1px solid #cfc'
             }}>
@@ -539,18 +552,18 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button 
-                        className="btn btn-outline" 
+                      <button
+                        className="btn btn-outline"
                         onClick={() => loadModuleForEdit(mod._id)}
                         style={{ fontSize: '0.9rem', padding: '0.5rem 1rem' }}
                       >
                         Edit
                       </button>
-                      <button 
-                        className="btn" 
+                      <button
+                        className="btn"
                         onClick={() => deleteModule(mod._id)}
-                        style={{ 
-                          fontSize: '0.9rem', 
+                        style={{
+                          fontSize: '0.9rem',
                           padding: '0.5rem 1rem',
                           backgroundColor: '#ff4444',
                           color: 'white',
@@ -581,11 +594,11 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
       <div className="container">
         {/* Error/Success Messages */}
         {error && (
-          <div style={{ 
-            background: '#fee', 
-            color: '#c33', 
-            padding: '1rem', 
-            borderRadius: '4px', 
+          <div style={{
+            background: '#fee',
+            color: '#c33',
+            padding: '1rem',
+            borderRadius: '4px',
             marginBottom: '1rem',
             border: '1px solid #fcc'
           }}>
@@ -593,11 +606,11 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
           </div>
         )}
         {success && (
-          <div style={{ 
-            background: '#efe', 
-            color: '#393', 
-            padding: '1rem', 
-            borderRadius: '4px', 
+          <div style={{
+            background: '#efe',
+            color: '#393',
+            padding: '1rem',
+            borderRadius: '4px',
             marginBottom: '1rem',
             border: '1px solid #cfc'
           }}>
@@ -634,9 +647,9 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
               </div>
               <div className="form-group" style={{ marginBottom: "1rem" }}>
                 <label className="form-label">Domain</label>
-                <select 
+                <select
                   className="form-input"
-                  value={moduleData.domain} 
+                  value={moduleData.domain}
                   onChange={(e) => handleModuleChange("domain", e.target.value)}
                 >
                   <option value="web-development">Web Development</option>
@@ -647,9 +660,9 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
               </div>
               <div className="form-group" style={{ marginBottom: "1rem" }}>
                 <label className="form-label">Difficulty</label>
-                <select 
+                <select
                   className="form-input"
-                  value={moduleData.difficulty} 
+                  value={moduleData.difficulty}
                   onChange={(e) => handleModuleChange("difficulty", e.target.value)}
                 >
                   <option value="beginner">Beginner</option>
@@ -706,19 +719,19 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
                     onClick={() => setActiveSection(idx)}
                   >
                     <span>{s.title || `${s.type} ${idx + 1}`}</span>
-                    <button 
-                      style={{ 
-                        background: "#ff4444", 
-                        color: "white", 
-                        border: "none", 
-                        borderRadius: "50%", 
-                        width: "20px", 
+                    <button
+                      style={{
+                        background: "#ff4444",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: "20px",
                         height: "20px",
                         cursor: "pointer"
                       }}
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        removeSection(idx) 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeSection(idx)
                       }}
                     >
                       ×
@@ -740,21 +753,21 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
                 <h2>{moduleData.sections[activeSection]?.title || "Section Editor"}</h2>
                 <div style={{ display: "flex", gap: "1rem" }}>
-                  <button 
-                    className="btn btn-outline" 
+                  <button
+                    className="btn btn-outline"
                     onClick={() => setShowModulesList(true)}
                   >
                     Manage Modules
                   </button>
-                  <button 
-                    className="btn btn-outline" 
+                  <button
+                    className="btn btn-outline"
                     onClick={onCancel}
                     disabled={isLoading}
                   >
                     Cancel
                   </button>
-                  <button 
-                    className="btn btn-primary" 
+                  <button
+                    className="btn btn-primary"
                     onClick={saveModuleToDatabase}
                     disabled={isLoading}
                   >

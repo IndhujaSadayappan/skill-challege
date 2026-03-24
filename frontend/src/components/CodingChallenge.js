@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import MonacoEditor from "@monaco-editor/react"
 import { useTheme } from "../context/ThemeContext"
 
 const CodingChallenge = ({ challenge, onComplete }) => {
@@ -71,13 +70,12 @@ const CodingChallenge = ({ challenge, onComplete }) => {
         {challenge.difficulty && (
           <div style={{ marginBottom: "1rem" }}>
             <span
-              className={`badge ${
-                challenge.difficulty === "Easy"
+              className={`badge ${challenge.difficulty === "Easy"
                   ? "badge-success"
                   : challenge.difficulty === "Medium"
                     ? "badge-warning"
                     : "badge-error"
-              }`}
+                }`}
             >
               {challenge.difficulty}
             </span>
@@ -160,22 +158,22 @@ const CodingChallenge = ({ challenge, onComplete }) => {
             overflow: "hidden",
           }}
         >
-          <MonacoEditor
-            height="400px"
-            language={challenge.language || "javascript"}
-            theme={isDark ? "vs-dark" : "vs-light"}
-            value={code}
-            onChange={(value) => setCode(value || "")}
-            options={{
-              minimap: { enabled: false },
-              fontSize: 14,
-              lineNumbers: "on",
-              roundedSelection: false,
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-              wordWrap: "on",
-              tabSize: 2,
+          <textarea
+            style={{
+              width: "100%",
+              height: "400px",
+              padding: "1rem",
+              fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+              fontSize: "14px",
+              border: "none",
+              backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
+              color: isDark ? "#d4d4d4" : "#000000",
+              resize: "none",
+              outline: "none",
             }}
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            spellCheck="false"
           />
         </div>
       </div>
