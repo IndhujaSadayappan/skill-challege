@@ -2,33 +2,35 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDS_ID = 'docker-creds'
+        DOCKER_USER = 'indhujavs'
+        DOCKER_PASS = credentials('docker-creds')
     }
 
     stages {
-        stage('Build & Push to Docker Hub') {
-            steps {
-                script {
-                    echo "Starting Build & Push Process..."
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDS_ID}", passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
-                        
-                        // Login to Docker Hub
-                        sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
 
-                        parallel(
-                            "Backend Build": {
-                                // Simplified build command as requested
-                                sh 'docker build -t indhujavs/skill-backend:latest ./backend'
-                                sh 'docker push indhujavs/skill-backend:latest'
-                            },
-                            "Frontend Build": {
-                                // Simplified build command as requested
-                                sh 'docker build -t indhujavs/skill-frontend:latest ./frontend'
-                                sh 'docker push indhujavs/skill-frontend:latest'
-                            }
-                        )
-                    }
-                }
+        stage('Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/IndhujaSadayappan/skill-challege.git'
+            }
+        }
+
+        stage('Build Backend Image') {
+            steps {
+                sh 'docker build -t indhujavs/skill-backend:latest ./backend'
+            }
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                sh 'docker build -t indhujavs/skill-frontend:latest ./frontend'
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                sh 'docker push indhujavs/skill-backend:latest'
+                sh 'docker push indhujavs/skill-frontend:latest'
             }
         }
     }
@@ -36,7 +38,6 @@ pipeline {
     post {
         always {
             sh 'docker logout || true'
-            cleanWs()
         }
     }
 }
