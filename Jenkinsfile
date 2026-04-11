@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_USER = 'indhujavs'
-        DOCKER_PASS = credentials('docker-creds')
     }
 
     stages {
@@ -26,18 +25,19 @@ pipeline {
             }
         }
 
+        stage('Login to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
+                }
+            }
+        }
+
         stage('Push Images') {
             steps {
-                sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 sh 'docker push indhujavs/skill-backend:latest'
                 sh 'docker push indhujavs/skill-frontend:latest'
             }
-        }
-    }
-
-    post {
-        always {
-            sh 'docker logout || true'
         }
     }
 }
