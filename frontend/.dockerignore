@@ -1,9 +1,5 @@
 node_modules
-npm-debug.log
-.env
 .git
-.gitignore
-Dockerfile
-docker-compose*
-README.md
+npm-debug.log
 build
+dist

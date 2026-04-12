@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci --quiet --no-audit --prefer-offline
 
 # Copy the rest of the backend source code
 COPY . .
