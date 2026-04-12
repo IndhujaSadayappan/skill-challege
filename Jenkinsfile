@@ -15,13 +15,13 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
-                sh 'DOCKER_BUILDKIT=1 docker build -t indhujavs/skill-backend:latest ./backend'
+                sh 'docker build -t indhujavs/skill-backend:latest ./backend'
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                sh 'DOCKER_BUILDKIT=1 docker build -t indhujavs/skill-frontend:latest ./frontend'
+                sh 'docker build -t indhujavs/skill-frontend:latest ./frontend'
             }
         }
 
