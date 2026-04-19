@@ -21,7 +21,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await axios.get(`${"http://13.234.18.228:5000"}/api/skills`)
+        const res = await axios.get(`${"http://3.6.91.209:5000"}/api/skills`)
         if (res.data.success) {
           setSkills(res.data.skills)
         }
@@ -88,7 +88,7 @@ const Navbar = () => {
               onMouseEnter={() => !mobileMenuOpen && setIsSkillsOpen(true)}
               onMouseLeave={() => !mobileMenuOpen && setIsSkillsOpen(false)}
             >
-              <span 
+              <span
                 className="nav-link"
                 onClick={() => mobileMenuOpen && setIsSkillsOpen(!isSkillsOpen)}
               >
@@ -146,7 +146,7 @@ const Navbar = () => {
                   onMouseEnter={() => !mobileMenuOpen && setIsUserMenuOpen(true)}
                   onMouseLeave={() => !mobileMenuOpen && setIsUserMenuOpen(false)}
                 >
-                  <span 
+                  <span
                     className="nav-link"
                     onClick={() => mobileMenuOpen && setIsUserMenuOpen(!isUserMenuOpen)}
                   >

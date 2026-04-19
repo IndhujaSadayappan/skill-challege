@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyAuth = async () => {
     try {
-      const response = await fetch(`${"http://13.234.18.228:5000"}/api/auth/verify`, {
+      const response = await fetch(`${"http://3.6.91.209:5000"}/api/auth/verify`, {
         method: "GET",
         credentials: "include", // Include cookies in request
         headers: {
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await fetch(`${"http://13.234.18.228:5000"}/api/auth/login`, {
+      const response = await fetch(`${"http://3.6.91.209:5000"}/api/auth/login`, {
         method: "POST",
         credentials: "include", // Include cookies in request
         headers: {
@@ -68,35 +68,35 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-const register = async (userData) => {
-  try {
-    const response = await fetch(`${"http://13.234.18.228:5000"}/api/auth/register`, {
-      method: "POST",
-      credentials: "include", // send cookies if backend uses sessions
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData), // includes role
-    })
+  const register = async (userData) => {
+    try {
+      const response = await fetch(`${"http://3.6.91.209:5000"}/api/auth/register`, {
+        method: "POST",
+        credentials: "include", // send cookies if backend uses sessions
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData), // includes role
+      })
 
-    const data = await response.json()
+      const data = await response.json()
 
-    if (response.ok) {
-      // Only set user if backend sends user data
-      if (data.user) setUser(data.user)
+      if (response.ok) {
+        // Only set user if backend sends user data
+        if (data.user) setUser(data.user)
 
-      return { success: true }
-    } else {
-      return { success: false, error: data.message || data.error || "Registration failed" }
+        return { success: true }
+      } else {
+        return { success: false, error: data.message || data.error || "Registration failed" }
+      }
+    } catch (error) {
+      return { success: false, error: "Network error occurred" }
     }
-  } catch (error) {
-    return { success: false, error: "Network error occurred" }
   }
-}
 
   const logout = async () => {
     try {
-      await fetch(`${"http://13.234.18.228:5000"}/api/auth/logout`, {
+      await fetch(`${"http://3.6.91.209:5000"}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: {

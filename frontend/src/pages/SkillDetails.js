@@ -24,7 +24,7 @@ const SkillDetails = () => {
 
     const fetchSkill = async () => {
       try {
-        const res = await axios.get(`${"http://13.234.18.228:5000"}/api/skills/${skillId}`)
+        const res = await axios.get(`${"http://3.6.91.209:5000"}/api/skills/${skillId}`)
         if (res.data.success) {
           const fetchedSkill = res.data.skill
           // Ensure modules have lessons fallback
@@ -63,11 +63,11 @@ const SkillDetails = () => {
             <li key={module._id} className="p-4 border rounded-lg hover:shadow-md transition">
               {module?.title ? (
                 <Link
-  to={`/skills/${skill._id}/module/${module._id}`}
-  className="text-indigo-600 hover:underline font-medium"
->
-  {module.title}
-</Link>
+                  to={`/skills/${skill._id}/module/${module._id}`}
+                  className="text-indigo-600 hover:underline font-medium"
+                >
+                  {module.title}
+                </Link>
 
               ) : (
                 <span className="text-gray-500 italic">No title available</span>

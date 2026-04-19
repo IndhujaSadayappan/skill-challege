@@ -343,7 +343,7 @@
 // }
 // import { useState, useEffect } from "react";
 // import { useParams, Link } from "react-router-dom";
-// import axios from "../api/axios"; // Ensure this is configured with baseURL: `${"http://13.234.18.228:5000"}/api/`
+// import axios from "../api/axios"; // Ensure this is configured with baseURL: `${"http://3.6.91.209:5000"}/api/`
 // import { useAuth } from "../context/AuthContext";
 // import "./SkillModule.css";
 
@@ -935,7 +935,7 @@ export default function SkillModule() {
                     onClick={() => setCurrentLessonIndex(currentLessonIndex + 1)}
                     className="nav-btn next-btn"
                   >
-                    Next → 
+                    Next →
                   </button>
                 )}
               </div>
@@ -1094,15 +1094,15 @@ export default function SkillModule() {
               ?.modulesProgress?.find(m => m.moduleId === moduleId)
               ?.lessonsProgress?.find(l => l.lessonId === lesson._id)?.completed;
           }) && (
-            <div className="complete-module-section">
-              <button
-                onClick={markModuleComplete}
-                className="complete-module-btn"
-              >
-                🎉 Complete This Module
-              </button>
-            </div>
-          )}
+              <div className="complete-module-section">
+                <button
+                  onClick={markModuleComplete}
+                  className="complete-module-btn"
+                >
+                  🎉 Complete This Module
+                </button>
+              </div>
+            )}
         </div>
       </main>
     </div>
