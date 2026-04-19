@@ -15,7 +15,7 @@ const Leaderboard = () => {
     const fetchLeaderboard = async () => {
       try {
         setLoading(true)
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/leaderboard/global`, {
+        const res = await fetch(`${"http://13.234.18.228:5000"}/api/leaderboard/global`, {
           credentials: "include",
         })
         const data = await res.json()

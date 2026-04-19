@@ -17,7 +17,7 @@ export const CoursesProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const API_URL = `${process.env.REACT_APP_API_URL}/api`
+  const API_URL = `${"http://13.234.18.228:5000"}/api`
 
   // Fetch all skills from API
   const fetchCourses = useCallback(async () => {

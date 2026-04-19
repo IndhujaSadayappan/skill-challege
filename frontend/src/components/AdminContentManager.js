@@ -52,7 +52,7 @@ const AdminContentManager = () => {
   const fetchCourses = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/courses`, {
+      const response = await fetch(`${"http://13.234.18.228:5000"}/api/admin/courses`, {
         credentials: "include",
       })
 
@@ -75,7 +75,7 @@ const AdminContentManager = () => {
     try {
       setLoading(true)
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/courses`, {
+      const response = await fetch(`${"http://13.234.18.228:5000"}/api/admin/courses`, {
         
         method: "POST",
         credentials: "include",
@@ -118,7 +118,7 @@ const AdminContentManager = () => {
     try {
       setLoading(true)
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/courses/${selectedCourse._id}/modules`, {
+      const response = await fetch(`${"http://13.234.18.228:5000"}/api/admin/courses/${selectedCourse._id}/modules`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -157,7 +157,7 @@ const AdminContentManager = () => {
       setLoading(true)
 
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/admin/courses/${selectedCourse._id}/modules/${selectedModule._id}/lessons`,
+        `${"http://13.234.18.228:5000"}/api/admin/courses/${selectedCourse._id}/modules/${selectedModule._id}/lessons`,
         {
           method: "POST",
           credentials: "include",
@@ -198,7 +198,7 @@ const AdminContentManager = () => {
     try {
       setLoading(true)
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/admin/courses/${courseId}`, {
+      const response = await fetch(`${"http://13.234.18.228:5000"}/api/admin/courses/${courseId}`, {
         method: "DELETE",
         credentials: "include",
       })

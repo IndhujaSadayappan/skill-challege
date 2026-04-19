@@ -21,7 +21,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/skills`)
+        const res = await axios.get(`${"http://13.234.18.228:5000"}/api/skills`)
         if (res.data.success) {
           setSkills(res.data.skills)
         }

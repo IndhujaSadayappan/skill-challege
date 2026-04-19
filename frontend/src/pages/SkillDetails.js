@@ -24,7 +24,7 @@ const SkillDetails = () => {
 
     const fetchSkill = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/skills/${skillId}`)
+        const res = await axios.get(`${"http://13.234.18.228:5000"}/api/skills/${skillId}`)
         if (res.data.success) {
           const fetchedSkill = res.data.skill
           // Ensure modules have lessons fallback
