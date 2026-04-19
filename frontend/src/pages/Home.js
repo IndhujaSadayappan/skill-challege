@@ -39,19 +39,19 @@ const Home = () => {
   }, [])
 
   const features = [
-    { 
-      icon: "🎯", 
-      title: "Interactive Learning", 
+    {
+      icon: "🎯",
+      title: "Interactive Learning",
       description: "Engage with hands-on projects and real-world challenges that build practical skills you can use immediately in your career."
     },
-    { 
-      icon: "📊", 
-      title: "Progress Tracking", 
+    {
+      icon: "📊",
+      title: "Progress Tracking",
       description: "Monitor your learning journey with detailed analytics, milestone achievements, and personalized recommendations."
     },
-    { 
-      icon: "🏆", 
-      title: "Industry Certificates", 
+    {
+      icon: "🏆",
+      title: "Industry Certificates",
       description: "Earn recognized certifications that showcase your expertise to employers and advance your professional growth."
     },
   ]
@@ -66,7 +66,7 @@ const Home = () => {
               🚀 Join 50,000+ Learners Worldwide
             </div>
             <h1 className="hero-title">
-              Master Skills That Matter
+              Master Skills
             </h1>
             <p className="hero-subtitle">
               Transform your career with interactive challenges, expert-led courses, and hands-on projects. Learn at your own pace, build real-world skills.
@@ -121,13 +121,13 @@ const Home = () => {
         <div className="container">
           <div className="section-header">
             {/* <div className="section-badge">POPULAR SKILLS</div> */}
-            {/* <h2 className="section-title">Choose Your Learning Path</h2>
+      {/* <h2 className="section-title">Choose Your Learning Path</h2>
             <p className="section-subtitle">
               Explore our comprehensive collection of courses designed by industry experts. Start building skills that accelerate your career today.
             </p>
           </div> */}
 
-          {/* {loading ? (
+      {/* {loading ? (
             <div className="loading-state">
               <div className="spinner"></div>
               <p>Loading amazing courses...</p>
@@ -154,7 +154,7 @@ const Home = () => {
             </div>
           )}
         </div>
-      </section> */} 
+      </section> */}
 
       {/* Features Section */}
       <section className="features-section">
