@@ -13,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await axios.get(`${"http://3.6.91.209:5000"}/api/skills`)
+        const res = await axios.get(`${"http://13.201.5.181:5000"}/api/skills`)
         if (res.data.success) {
           const formatted = res.data.skills.map((skill) => ({
             title: skill.name,

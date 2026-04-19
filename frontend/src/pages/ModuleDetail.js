@@ -37,7 +37,7 @@ const ModuleDetail = () => {
   const fetchModule = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${"http://3.6.91.209:5000"}/api/skills/${skillId}/modules/${moduleId}`, {  // Updated endpoint
+      const response = await fetch(`${"http://13.201.5.181:5000"}/api/skills/${skillId}/modules/${moduleId}`, {  // Updated endpoint
         credentials: "include",
       })
 
@@ -59,7 +59,7 @@ const ModuleDetail = () => {
 
   const updateProgress = async (lessonId, completed, score = null) => {
     try {
-      await fetch(`${"http://3.6.91.209:5000"}/api/skills/${skillId}/progress`, {  // Updated for skills
+      await fetch(`${"http://13.201.5.181:5000"}/api/skills/${skillId}/progress`, {  // Updated for skills
         method: "POST",
         credentials: "include",
         headers: {

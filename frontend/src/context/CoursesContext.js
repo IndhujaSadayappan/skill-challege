@@ -17,7 +17,7 @@ export const CoursesProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const API_URL = `${"http://3.6.91.209:5000"}/api`
+  const API_URL = `${"http://13.201.5.181:5000"}/api`
 
   // Fetch all skills from API
   const fetchCourses = useCallback(async () => {
