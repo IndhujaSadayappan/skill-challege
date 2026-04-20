@@ -45,7 +45,7 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch(`${"http://13.232.214.235:5000"}/api/admin/stats`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/stats`, {
         credentials: "include",
       })
       const data = await response.json()
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
 
   const fetchSkills = async () => {
     try {
-      const response = await fetch(`${"http://13.232.214.235:5000"}/api/admin/skills`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills`, {
         credentials: "include",
       })
       const data = await response.json()
@@ -93,8 +93,8 @@ const AdminDashboard = () => {
 
     try {
       const url = editingSkillId
-        ? `${"http://13.232.214.235:5000"}/api/admin/skills/${editingSkillId}`
-        : `${"http://13.232.214.235:5000"}/api/admin/skills`
+        ? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills/${editingSkillId}`
+        : `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills`
 
       const method = editingSkillId ? "PUT" : "POST"
 
@@ -151,7 +151,7 @@ const AdminDashboard = () => {
   const handleDeleteSkill = async (skillId) => {
     if (window.confirm("Are you sure you want to delete this skill and all its modules?")) {
       try {
-        const response = await fetch(`${"http://13.232.214.235:5000"}/api/admin/skills/${skillId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills/${skillId}`, {
           method: "DELETE",
           credentials: "include",
         })
@@ -261,8 +261,8 @@ const AdminDashboard = () => {
 
     try {
       const url = editingModuleId
-        ? `${"http://13.232.214.235:5000"}/api/admin/skills/${selectedSkillForModule}/modules/${editingModuleId}`
-        : `${"http://13.232.214.235:5000"}/api/admin/skills/${selectedSkillForModule}/modules`
+        ? `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills/${selectedSkillForModule}/modules/${editingModuleId}`
+        : `${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills/${selectedSkillForModule}/modules`
 
       const method = editingModuleId ? "PUT" : "POST"
 
@@ -321,7 +321,7 @@ const AdminDashboard = () => {
   const handleDeleteModule = async (skillId, moduleId) => {
     if (window.confirm("Are you sure you want to delete this module?")) {
       try {
-        const response = await fetch(`${"http://13.232.214.235:5000"}/api/admin/skills/${skillId}/modules/${moduleId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/api/admin/skills/${skillId}/modules/${moduleId}`, {
           method: "DELETE",
           credentials: "include",
         })
