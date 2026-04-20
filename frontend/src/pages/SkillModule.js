@@ -343,7 +343,7 @@
 // }
 // import { useState, useEffect } from "react";
 // import { useParams, Link } from "react-router-dom";
-// import axios from "../api/axios"; // Ensure this is configured with baseURL: `${"http://13.201.5.181:5000"}/api/`
+// import axios from "../api/axios"; // Ensure this is configured with baseURL: `${"http://13.232.214.235:5000"}/api/`
 // import { useAuth } from "../context/AuthContext";
 // import "./SkillModule.css";
 

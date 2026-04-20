@@ -24,7 +24,7 @@ const AdminModuleEditor = ({ module, onSave, onCancel }) => {
   const [activeSection, setActiveSection] = useState(0)
 
   // API Configuration
-  const API_BASE_URL = "http://13.201.5.181:5000" || `${"http://13.201.5.181:5000"}`
+  const API_BASE_URL = "http://13.232.214.235:5000" || `${"http://13.232.214.235:5000"}`
 
   // Helper function to get authentication token
   const getAuthToken = () => {

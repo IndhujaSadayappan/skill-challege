@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyAuth = async () => {
     try {
-      const response = await fetch(`${"http://13.201.5.181:5000"}/api/auth/verify`, {
+      const response = await fetch(`${"http://13.232.214.235:5000"}/api/auth/verify`, {
         method: "GET",
         credentials: "include", // Include cookies in request
         headers: {
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await fetch(`${"http://13.201.5.181:5000"}/api/auth/login`, {
+      const response = await fetch(`${"http://13.232.214.235:5000"}/api/auth/login`, {
         method: "POST",
         credentials: "include", // Include cookies in request
         headers: {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await fetch(`${"http://13.201.5.181:5000"}/api/auth/register`, {
+      const response = await fetch(`${"http://13.232.214.235:5000"}/api/auth/register`, {
         method: "POST",
         credentials: "include", // send cookies if backend uses sessions
         headers: {
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await fetch(`${"http://13.201.5.181:5000"}/api/auth/logout`, {
+      await fetch(`${"http://13.232.214.235:5000"}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: {
