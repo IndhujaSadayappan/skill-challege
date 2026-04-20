@@ -31,8 +31,7 @@ services:
       - CLIENT_URL=${CLIENT_URL:-http://localhost:3000}
       - JWT_SECRET=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWxpY2UiLCJleHAiOjE3NTg1MzczMTgsImlhdCI6MTc1ODUzMzcxOH0.2SuzFE1Hsy4-ZwmkXNLCwp7W44I_GidEqlemoJvVyds
     depends_on:
-      mongodb:
-        condition: service_healthy
+      - mongodb
     networks:
       - mern_network
 
