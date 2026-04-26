@@ -38,10 +38,10 @@ app.use(
 app.use("/api", publicRoutes);
 
 
+const dbUri = process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://127.0.0.1:27017/skill-learning-platform";
+console.log(`📡 Connecting to MongoDB at: ${dbUri.split('@').pop()}`); // Log URI without credentials
 mongoose
-  .connect(
-    process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://127.0.0.1:27017/skill-learning-platform"
-  )
+  .connect(dbUri)
   .then(() => console.log("✅ MongoDB connected successfully"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
