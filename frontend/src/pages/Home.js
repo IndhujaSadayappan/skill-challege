@@ -63,7 +63,7 @@ const Home = () => {
         <div className="hero-content">
           <div className="hero-text">
             <div className="hero-badge">
-              🚀 Join 50,000+ Learners Worldwide
+              🚀 Join 50,000+ Learners 
             </div>
             <h1 className="hero-title">
               Master Skills
