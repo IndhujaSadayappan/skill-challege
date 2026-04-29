@@ -66,7 +66,7 @@ const Home = () => {
               🚀 Join 50,000+ Learners Worldwide
             </div>
             <h1 className="hero-title">
-              Master Skills V2.0
+              Master Skills
             </h1>
             <p className="hero-subtitle">
               Transform your career with interactive challenges, expert-led courses, and hands-on projects. Learn at your own pace, build real-world skills.

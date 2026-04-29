@@ -5,16 +5,35 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const publicRoutes = require("./routes/public");
-
-
-
-
-
+const client = require("prom-client");
 
 dotenv.config();
 
 const app = express();
+
+// Prometheus Metrics Setup
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
+
+// Custom metric for HTTP request duration
+const httpRequestDurationMicroseconds = new client.Histogram({
+  name: "http_request_duration_seconds",
+  help: "Duration of HTTP requests in seconds",
+  labelNames: ["method", "route", "code"],
+  buckets: [0.1, 0.3, 0.5, 0.7, 1, 3, 5, 7, 10],
+});
+register.registerMetric(httpRequestDurationMicroseconds);
+
 const PORT = process.env.PORT || 5000;
+
+// Middleware to track request duration
+app.use((req, res, next) => {
+  const end = httpRequestDurationMicroseconds.startTimer();
+  res.on("finish", () => {
+    end({ method: req.method, route: req.url, code: res.statusCode });
+  });
+  next();
+});
 
 app.use(
   cors({
@@ -58,6 +77,12 @@ app.use("/api/dashboard", require("./routes/dashboard"));
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "Server is running" });
+});
+
+// Prometheus metrics endpoint
+app.get("/metrics", async (req, res) => {
+  res.setHeader("Content-Type", register.contentType);
+  res.send(await register.metrics());
 });
 
 
